@@ -9,14 +9,14 @@ set -euo pipefail
 
 ACC=SRR32410565
 
-# refined reads (NanoFilt output you assembled/polished with)
-READS="fastq/${ACC}.nanofilt.q10.l1000.fastq.gz"
+# refined reads
+READS=medaka_SRR32410565/consensus.fasta
 REF=GCF_002507875.2_ASM250787v2_genomic.fna
 OUTDIR="mapping_${ACC}"
 
 mkdir -p "$OUTDIR"
 
-# Align ONT reads to reference using the ONT preset, output BAM, then sort >
+# Align ONT reads to reference
 minimap2 -t 8 -ax map-ont "${REF}" "$READS" \
 | samtools view -b - \
 | samtools sort -o "${OUTDIR}/${ACC}.ref.sorted.bam" -
