@@ -5,7 +5,7 @@ set -euo pipefail
 
 ACC=SRR32410565
 ASM="flye_${ACC}/assembly.fasta"
-READS="fastq/${ACC}.nanofilt.q10.l1000.fastq.gz"
+READS="flye_${ACC}/10-consensus/consensus.fasta"
 OUTDIR="medaka_${ACC}"
 
 mkdir -p "$OUTDIR"
