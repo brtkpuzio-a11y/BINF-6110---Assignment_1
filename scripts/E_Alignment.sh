@@ -2,7 +2,7 @@
 #module load StdEnv/2023
 #module load minimap2
 #module load samtools
-#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/507/875/GCF_002507875.2_ASM250787v2/GCF_002507875.2_ASM250787v2_genomic.fna.gz
+#wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/006/945/GCF_000006945.2_ASM694v2/GCF_000006945.2_ASM694v2_genomic.fna.gz
 #gunzip GCF_002507875.2_ASM250787v2_genomic.fna.gz
 
 set -euo pipefail
@@ -10,8 +10,8 @@ set -euo pipefail
 ACC=SRR32410565
 
 # refined reads
-ASM="medaka_${ACC}/consensus.fasta"
-REF="GCF_002507875.2_ASM250787v2_genomic.fna"
+ASM="polished_SRR32410565/medaka/consensus.fasta"
+REF="GCF_000006945.2_ASM694v2_genomic.fna"
 OUTDIR="mapping_${ACC}"
 
 mkdir -p "$OUTDIR"
