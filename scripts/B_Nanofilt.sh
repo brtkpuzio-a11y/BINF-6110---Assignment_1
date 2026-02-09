@@ -6,7 +6,11 @@ set -euo pipefail
 
 ACC="SRR32410565"
 IN="fastq/${ACC}.fastq.gz"
-OUT="fastq/${ACC}.nanofilt.q15.l2000.fastq.gz"
+OUT="fastq/${ACC}.nanofilt.q10.l1000.fastq.gz"
+
+MINLEN=1000
+MINQ=10
+THREADS=8
 
 zcat "$IN" | apptainer exec nanofilt_2.8.0--py_0.sif NanoFilt -l 2000 -q 15 | gzip -c > "$OUT"
 echo "Wrote: $OUT"
