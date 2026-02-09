@@ -8,5 +8,5 @@ ACC=SRR32410565
 READS="fastq/${ACC}.nanofilt.q10.l1000.fastq.gz"
 OUTDIR="flye_${ACC}"
 
-apptainer exec flye_2.9.6--py311h2de2dd3_0.sif flye --nano-hq "$READS" --genome-size 5m --out-dir "$OUTDIR" --threads 8
+apptainer exec flye_2.9.6--py311h2de2dd3_0.sif flye --nano-hq "$READS" --out-dir "$OUTDIR" --threads 8
 echo "Assembly: ${OUTDIR}/assembly.fasta"
