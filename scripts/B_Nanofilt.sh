@@ -8,5 +8,5 @@ ACC="SRR32410565"
 IN="fastq/${ACC}.fastq.gz"
 OUT="fastq/${ACC}.nanofilt.q10.l1000.fastq.gz"
 
-zcat "$IN" | apptainer exec nanofilt_2.8.0--py_0.sif NanoFilt -l 1000 -q 10 | gzip -c > "$OUT"
+zcat "$IN" | apptainer exec nanofilt_2.8.0--py_0.sif NanoFilt -l 2000 -q 15 | gzip -c > "$OUT"
 echo "Wrote: $OUT"
