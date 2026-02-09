@@ -1,40 +1,62 @@
 #!/usr/bin/env bash
+#Module load samtools
+#Module load bcftools
 set -euo pipefail
 
-ACC="SRR32410565"
-REF="GCF_002507875.2_ASM250787v2_genomic.fna"
+ACC="${1:-SRR32410565}"
+REF="GCF_000006945.2_ASM694v2_genomic.fna"
 READS="fastq/${ACC}.nanofilt.q10.l1000.fastq.gz"
+OUTDIR="variants_${ACC}_vs_ref"
 
-OUTDIR="vcf_${ACC}_vs_asm"
-BAM="${OUTDIR}/${ACC}.vs_asm.sorted.bam"
+BAM="${OUTDIR}/${ACC}.vs_ref.sorted.bam"
 VCF_RAW="${OUTDIR}/${ACC}.raw.vcf.gz"
-VCF_IGV="${OUTDIR}/${ACC}.igv.vcf.gz"
+VCF_FILT="${OUTDIR}/${ACC}.filtered.vcf.gz"
 
-module load StdEnv/2023 minimap2 samtools bcftools 2>/dev/null || true
 mkdir -p "$OUTDIR"
 
-# index reference for mpileup + IGV
-[[ -f "${REF}.fai" ]] || samtools faidx "$REF"
+# Index reference
+if [[ ! -f "${REF}.fai" ]]; then
+   samtools faidx "$REF"
+fi
 
-# align reads to your assembly, sort + index
-minimap2 -t 8 -ax map-ont "$REF" "$READS" \
-| samtools sort -o "$BAM" -
-samtools index "$BAM"
+# Align reads to reference genome
+ minimap2 -t 8 -ax map-ont "$REF" "$READS" | \
+ samtools sort -@ 8 -o "$BAM" -
 
-# call variants
-bcftools mpileup -Ou -f "$REF" -q 30 -Q 15 -d 10000 -a FORMAT/DP --threads 8 "$BAM" \
-| bcftools call -mv --ploidy 1 -Oz --threads 8 -o "$VCF_RAW"
-bcftools index -t "$VCF_RAW"
+ samtools index "$BAM"
 
-# IGV-friendly filter (QUAL>=50 and DP>=10), keep SNPs+indels
-bcftools view -v snps,indels "$VCF_RAW" \
-| bcftools filter -i 'QUAL>=50 && FORMAT/DP>=10' -Oz -o "$VCF_IGV"
-bcftools index -t "$VCF_IGV"
+# Alignment statistics
+echo "Alignment Statistics"
+ samtools flagstat "$BAM"
 
-# quick stats
-bcftools stats "$VCF_IGV" | grep -E '^SN|TSTV'
+# Call variants
+ bcftools mpileup \
+    -Ou -f "$REF" \
+    -q 10 -Q 15 \
+    -d 10000 \
+    -a FORMAT/DP,FORMAT/AD \
+    --threads 8 "$BAM" | \
+ bcftools call \
+    -mv --ploidy 1 \
+    -Oz --threads 8 \
+    -o "$VCF_RAW"
 
-echo "REF: $REF"
+ bcftools index -t "$VCF_RAW"
+
+# Filter variants
+ bcftools view -v snps,indels "$VCF_RAW" | \
+ bcftools filter \
+    -i 'QUAL>=50 && FORMAT/DP>=20' \
+    -Oz -o "$VCF_FILT"
+
+ bcftools index -t "$VCF_FILT"
+
+ # Variant statistics
+echo "Variant Statistics"
+ bcftools stats "$VCF_FILT" | grep -E '^SN|TSTV'
+
+echo "Reference: $REF"
 echo "BAM: $BAM"
 echo "VCF raw: $VCF_RAW"
-echo "VCF IGV: $VCF_IGV"
+echo "VCF filtered: $VCF_FILT"
+echo "View variants with: bcftools view $VCF_FILT | less"
