@@ -35,8 +35,9 @@
 
 ### Discussion
 <img width="4764" height="2949" alt="variant_analysis" src="https://github.com/user-attachments/assets/7f860277-0e3f-4d6a-a16d-359ed37bab13" />
+<img width="1915" height="1107" alt="igv 1" src="https://github.com/user-attachments/assets/6480e696-a14e-48d3-a98c-35213c953e7d" />
 <img width="4162" height="3816" alt="circos_plot" src="https://github.com/user-attachments/assets/3592b809-aff0-49a4-9ff1-988dad809808" />
-<img width="1912" height="1111" alt="IGV" src="https://github.com/user-attachments/assets/ea0dd0f1-e9b0-4216-9dba-fef6a0f81317" />
+
 <img width="3000" height="3000" alt="bandage_labeled" src="https://github.com/user-attachments/assets/5d9be72b-de1b-42b1-8057-ada3380996d8" />
 <img width="1918" height="1110" alt="igc as" src="https://github.com/user-attachments/assets/816955fd-598a-42c4-b0a5-b17d364ee9d1" />
 
