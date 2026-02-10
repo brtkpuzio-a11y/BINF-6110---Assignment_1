@@ -23,7 +23,7 @@
 
 ### Reference genome selection
 
-  A high-quality, well-annotated *S. enterica* reference genome (NCBI Assembly ASM250787v2) was retrieved from the NCBI Assembly database [5]. This reference was chosen due to its completeness and annotation quality, providing a reliable framework for alignment-based comparison.
+  A high-quality, well-annotated *S. enterica* reference genome (NCBI Assembly ASM694v2) was retrieved from the NCBI Assembly database [5]. This reference was chosen due to its completeness and annotation quality, providing a reliable framework for alignment-based comparison.
 
 ### Read alignment to the reference genome
 
