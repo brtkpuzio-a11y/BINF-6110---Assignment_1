@@ -11,7 +11,7 @@
 
 ### Sequencing data acquisition and preprocessing
 
-  Oxford Nanopore long reads generated using R10 chemistry (expected accuracy Q20+, N50: 5–15 kb) were obtained in FASTQ format from NCBI. Read quality and length distributions were summarized using NanoPlot to confirm that the dataset contained sufficient long-read content for assembly. To improve assembly performance, ultra-short reads were removed using NanoFilt, because such reads contribute limited long-range structural information and can increase overlaps in long-read assembly workflows.
+  Oxford Nanopore long reads generated using R10 chemistry (expected accuracy Q20+, N50: 5–15 kb) were obtained in FASTQ format from NCBI. To improve assembly performance, ultra-short reads were removed using NanoFilt, because such reads contribute limited long-range structural information and can increase overlaps in long-read assembly workflows.
 
 ### Genome assembly
 
@@ -19,7 +19,7 @@
 
 ### Assembly polishing
 
-  The draft assembly was polished using Medaka (v1.7.3) [8]. Medaka applies neural network models trained on ONT datasets to correct error patterns and improve accuracy [8]. The model corresponding to R10 chemistry was selected, and polishing was run with default settings. Polishing was performed prior to comparative analysis to reduce the likelihood that sequencing errors would appear as false-positive SNPs or indels during reference-based variant detection.
+  The draft assembly was polished using racon (v1.5.0) and Medaka (v1.7.3) [8]. Medaka applies neural network models trained on ONT datasets to correct error patterns and improve accuracy [8]. The model corresponding to R10 chemistry was selected, and polishing was run with default settings. Polishing was performed prior to comparative analysis to reduce the likelihood that sequencing errors would appear as false-positive SNPs or indels during reference-based variant detection.
 
 ### Reference genome selection
 
