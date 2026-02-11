@@ -34,7 +34,7 @@
   Aligned reads were used to identify genomic differences between the sequenced sample and the reference genome, with a focus on SNPs and indels as key indicators of strain-level divergence [9]. Alignments and variants were visualized in IGV (v2.16.2), which supports the inspection of mapping quality and sequence information around candidate variants [12].
 
 ## Discussion
-This study generated a highly contiguous ONT-based assembly for the sequenced Salmonella enterica isolate and used reference-based comparison to quantify divergence from the NCBI ASM694v2 reference. Read preprocessing improved input data suitability for long-read assembly: filtering reduced the dataset from 196,031 reads (809 Mb, min 9 bp, max 58,041 bp) to 164,065 reads (715 Mb, min 2,000 bp, max 17,593 bp) while increasing mean read length (4.1 kb to 4.3 kb). This retained high overall depth and removed ultra-short fragments that contribute little to repeat spanning but can increase overlaps during assembly.
+This study generated a highly contiguous ONT-based assembly for the sequenced Salmonella enterica isolate and used reference-based comparison to quantify divergence from the NCBI ASM694v2 reference. Read preprocessing improved input data suitability for long-read assembly. Filtering reduced the dataset from 196,031 reads (809 Mb, min 9 bp, max 58,041 bp) to 164,065 reads (715 Mb, min 2,000 bp, max 17,593 bp) while increasing mean read length (4.1 kb to 4.3 kb). This retained high overall depth and removed ultra-short fragments that contribute little to repeat spanning but can increase overlaps during assembly.
 | Metric | Value |
 |---|---:|
 |  contigs | 3 |
@@ -42,11 +42,11 @@ This study generated a highly contiguous ONT-based assembly for the sequenced Sa
 | Total length (post-polish) | 5,103,897 bp |
 | Contig sizes | 3,318,771 bp; 1,676,978 bp; 109,060 bp |
 | Circular contig | contig_4 (109,060 bp) |
-| Contig coverages | contig_3: 139×; contig_2: 150×; contig_4: 215× |
+| Contig coverages | contig_3: 139x; contig_2: 150x; contig_4: 215x |
 
 
 
-The de novo assembly showed strong contiguity, producing three contigs totaling 5.10 Mb (N50:3.3 MB), with one contig flagged as circular and higher-coverage (215x) than the two larger contigs (139–150x). The circular, high-coverage contig is consistent with a plasmid-like replicon and suggests either increased plasmid copy number relative to the chromosome or preferential sequencing of that element. The assembly graph also showed a short connecting segment between the two large chromosomal components, consistent with an unresolved repeat junction that prevents closure into a single circular chromosome. Polishing with racon/Medaka had a modest effect on total length (−912 bp), implying that polishing corrected local consensus errors rather than restructuring the assembly.
+The de novo assembly showed strong contiguity, producing three contigs totaling 5.10 Mb (N50:3.3 MB), with one contig flagged as circular and higher-coverage (215x) than the two larger contigs (139–150x). The circular, high-coverage contig is consistent with a plasmid-like replicon and suggests either increased plasmid copy number relative to the chromosome or preferential sequencing of that element.The assembly graph revealed a 269 bp connecting segment (edge_1) between the two large chromosomal contigs (edge_2 and edge_3), indicating an ambiguous junction where the assembler detected sequence similarity but could not confidently merge the contigs. This is consistent with a repeat region or rearrangement boundary that could be resolved with additional information. Polishing with racon/Medaka had a modest effect on total length (−912 bp), implying that polishing corrected local consensus errors rather than restructuring the assembly.
 | Metric | Value |
 |---|---:|
 | Total alignments | 171,421 |
@@ -56,7 +56,7 @@ The de novo assembly showed strong contiguity, producing three contigs totaling 
 | Unmapped | 9,447 (5.76%) |
 | Mean depth (genome-wide) | 137.138× |
 
-Read mapping statistics further support both overall comparability and the presence of reference-missing sequence. Approximately 94.2% of filtered primary reads mapped to the reference, leaving 5.7% unmapped. Consistent with this, the assembly length (5.1 Mb) exceeds the combined length of the LT2 chromosome and plasmid (4.9 Mb), suggesting that the sample may carry additional or expanded mobile elements relative to the reference and/or that some inserted sequence is present that cannot be represented purely as SNP/short indel differences in a reference-based variant callset. While the VCF summarizes base-level differences where mapping is feasible, it will under-capture novel insertions or accessory regions absent from the reference.
+Read mapping statistics further support both overall comparability and the presence of reference-missing sequence. Approximately 94.2% of filtered primary reads mapped to the reference, leaving 5.7% unmapped. Consistent with this, the assembly length (5.1 Mb) exceeds the combined length of the ASM694v2 chromosome and plasmid (4.9 Mb), suggesting that the sample may carry additional or expanded mobile elements relative to the reference and/or that some inserted sequence is present that cannot be represented purely as SNP/short indel differences in a reference-based variant callset. While the VCF summarizes base-level differences where mapping is feasible, it will under-capture novel insertions or accessory regions absent from the reference.
 
 | Metric | Value |
 |---|---:|
@@ -70,17 +70,17 @@ Read mapping statistics further support both overall comparability and the prese
 | QUAL (min / mean / max) | 51.009 / 224.221 / 228.434 |
 | Mean depth at variant sites | 170.277× |
 
+When comparing the sample to the reference via read mapping and variant calling, the genome showed substantial sequence divergence. After filtering (QUAL ≥ 50), 8,838 total variants were detected, dominated by SNPs (8,770) with few indels (68). The low indel fraction is notable for ONT data, because raw ONT errors are often enriched for indels in low-complexity contexts; here, the small indel count suggests polishing and quality filtering were effective at suppressing common ONT-induced artifacts. Variant QUAL values were uniformly high (mean 224, min 51), and called sites were supported by strong read depth (mean depth at variants 170x versus genome-wide mean depth 137x), increasing confidence that most reported differences reflect genuine strain-level variation.
+
 <img width="4764" height="2949" alt="variant_analysis" src="https://github.com/user-attachments/assets/7f860277-0e3f-4d6a-a16d-359ed37bab13" />
 Figure 1. Variant calling summary and quality metrics across the Salmonella enterica genome. Long-read reads generated by Oxford Nanopore Technologies were aligned to the S. enterica reference assembly NCBI ASM694v2, and variants were filtered at QUAL ≥ 50. A total of 8,838 variants passed filtering, comprising 8,770 SNPs (99.2%) and 68 indels (0.8%), with no multiallelic sites detected. Variant quality was uniformly high (QUAL min 51.0, max 228.4, mean 224.2), and variant positions show a non-uniform distribution with localized peaks in variant density along the genome.
-
-When comparing the sample to the reference via read mapping and variant calling, the genome showed substantial sequence divergence. After filtering (QUAL ≥ 50), 8,838 total variants were detected, dominated by SNPs (8,770) with few indels (68). The low indel fraction is notable for ONT data, because raw ONT errors are often enriched for indels in low-complexity contexts; here, the small indel count suggests polishing and quality filtering were effective at suppressing common ONT-induced artifacts. Variant QUAL values were uniformly high (mean 224, min 51), and called sites were supported by strong read depth (mean depth at variants 170x versus genome-wide mean depth 137x), increasing confidence that most reported differences reflect genuine strain-level variation.
 
 
 <img width="4162" height="3816" alt="circos_plot" src="https://github.com/user-attachments/assets/3592b809-aff0-49a4-9ff1-988dad809808" />
 Figure 2. Circos view of genome-wide variant distribution across reference replicons. Circos plot summarizing the spatial distribution of filtered variants relative to reference replicons (outer ring; chromosome NC_003197.2 and plasmid NC_003277.2). The middle ring shows binned variant density, while the inner ring plots individual events (SNPs in red, indels in blue). Clustering of points highlights genomic intervals with elevated divergence from the reference, consistent with localized strain differences and/or mobile element-associated variation.
 
 
-Variant distribution was non-uniform across the genome, with localized peaks in variant density. This pattern is consistent with *S. enterica* genomes where divergence can be concentrated in horizontally acquired regions, as well as in loci under different selective pressures. The Circos and density plots emphasize that divergence is not evenly spread across the chromosome and plasmid replicons, supporting the interpretation that the sequenced isolate is not genetically very similar to the reference ASM694v2 but instead represents a distinct strain/lineage. The transition/transversion ratio (Ts/Tv = 1.1) shows an enrichment of transitions, which is consistent with biological mutation patterns. The Ts/Tv ratio of 1.1 is lower than typical biological expectations of 2-3, which may reflect a combination of the ONT error profile or technical influences from the variant calling process.
+Variant distribution was non-uniform across the genome, with localized peaks in variant density. This pattern is consistent with *S. enterica* genomes where divergence can be concentrated in horizontally acquired regions, as well as in loci under different selective pressures. The Circos and density plots emphasize that divergence is not evenly spread across the chromosome and plasmid replicons, supporting the interpretation that the sequenced isolate is not genetically very similar to the reference ASM694v2 but instead represents a distinct strain/lineage. The transition/transversion ratio (Ts/Tv = 1.1) shows an enrichment of transitions, which is consistent with biological mutation patterns. Ts/Tv of 1.1 is lower than commonly observed in many high-confidence SNP callsets, which can indicate a mix of true divergence and technical effects. Based on the extent of genomic divergence (8,800 variants across 5.1 Mb, 0.17% sequence divergence), the sequenced isolate appears to be a distinct strain within *S. enterica* serovar Typhimurium, closely related to but genetically separable from the ASM694v2 reference strain. This level of divergence is consistent with intra-serovar variation and suggests recent shared ancestry with independent evolution.
 
 
 <img width="3000" height="3000" alt="bandage_labeled" src="https://github.com/user-attachments/assets/5d9be72b-de1b-42b1-8057-ada3380996d8" />
@@ -88,13 +88,22 @@ Figure 3. Assembly graph topology indicates a highly contiguous genome with one 
 
 
 <img width="1915" height="1107" alt="igv 1" src="https://github.com/user-attachments/assets/6480e696-a14e-48d3-a98c-35213c953e7d" />
-Figure 4. IGV validation of a representative high-confidence variant cluster within the dcoB locus. Snapshot from IGV showing aligned ONT reads and the corresponding filtered VCF track. Multiple SNPs and small indel signals are supported by consistent read evidence across the pileup, and the gene model track indicates the variants fall within the coding region of dcoB, illustrating how sequence differences relative to the reference remain after polishing and filtering.
+Figure 4. IGV validation of a representative high-confidence variant cluster within the dcoB locus. Snapshot from IGV showing aligned ONT reads and the corresponding filtered VCF track. Multiple SNPs and small indel signals are supported by consistent read evidence across the pileup, and the gene model track indicates the variants fall within the coding region of *dcoB*, illustrating how sequence differences relative to the reference remain after polishing and filtering.
 
-Finally, inspection in IGV provides locus-level validation that called variants have coherent read support and occur within annotated genes. For example, the dcoB region shows clustered mismatches, illustrating how reference divergence can translate into coding changes that may affect protein sequence and function. However, functional interpretation requires downstream annotation of variant effects, which is not captured by counts alone.
+Inspection in IGV provides locus-level validation that called variants have coherent read support and occur within annotated genes. For example, the dcoB region shows clustered mismatches, illustrating how divergence can translate into coding changes that may affect protein sequence and function. However, functional interpretation requires downstream annotation of variant effects, which is not captured by counts alone.
 
 
 <img width="1918" height="1110" alt="igc as" src="https://github.com/user-attachments/assets/816955fd-598a-42c4-b0a5-b17d364ee9d1" />
-Figure 5. Broad IGV view of alignment/variant landscape across a representative 582 kb chromosomal interval. Genome browser view showing read alignment depth and dense SNV/indel signals relative to the reference. Mean sequencing depth across the alignment was 137×, with called variant sites supported by higher average depth (170× at variant positions), indicating that most reported variants occur in well-covered regions. This panel provides a quality-control overview linking coverage structure to variant calls over a large genomic span.
+Figure 5. Broad IGV view of alignment/variant landscape across a representative 582 kb chromosomal interval. Genome browser view showing read alignment depth and dense SNV/indel signals relative to the reference. Mean sequencing depth across the alignment was 137x, with called variant sites supported by higher average depth (170x at variant positions), indicating that most reported variants occur in well-covered regions. This panel provides a quality-control overview linking coverage structure to variant calls over a large genomic span.
+
+While the present analysis establishes substantial genomic divergence between the sequenced isolate and the reference strain, functional interpretation of these differences requires variant effect prediction and annotation to determine which changes affect protein-coding sequences, regulatory elements, or mobile genetic elements. Future work should include:
+
+1. Functional annotation of the de novo assembly to identify strain-specific genes and mobile elements absent from the reference
+2. Variant effect prediction (e.g., SnpEff, VEP) to classify coding changes as synonymous, missense, or nonsense mutations
+3. Comparative genomics with additional S. enterica isolates to place this strain within a phylogenetic context
+4. Experimental validation of key variants in candidate virulence or antimicrobial resistance genes
+
+This multi-step sequencing and assembly workflow demonstrates the power of long-read ONT technology for generating contiguous bacterial genome assemblies suitable for both comparative and functional genomic analyses.
 
 
 
